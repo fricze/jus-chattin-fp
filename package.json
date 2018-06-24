@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "most": "^1.7.3",
+    "most-subject": "^6.0.0",
+    "most-w3msg": "^2.0.0",
     "ramda": "^0.25.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
