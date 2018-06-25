@@ -18,23 +18,15 @@ import ChatConnectionFactory from './connections/ChatConnection.js'
 
 const receiveWsEpic = action$ => action$
   .thru(select('START_APP'))
-  .chain(() => socketStream)
+  .chain(_ => socketStream)
   .map(value => ({
     type: 'SET_CHAT',
-    value: JSON.parse(value.data)
+    value: value.data
   }))
 
 
 const sendWsEpic = action$ => action$
   .thru(select('SEND_MSG'))
-  .chain(({ text }) => {
-    const msg = {
-      msg: text,
-      author: 'RANDOM AUTHOR'
-    }
-
-    return fromPromise(toWebSocket(of(JSON.stringify(msg)), conn))
-  })
   .map(_ => ({
     type: 'CLEAR_SEND_MSG'
   }))
@@ -54,13 +46,22 @@ const store = createStore(
   applyMiddleware(epicMiddleware)
 )
 
-const stream = create((add, end, error) => {
-  store.subscribe(() => add(store.getState()))
+const streamOfMsgToSend = create((add) => {
+  store.subscribe(() => {
+    const msg = store.getState().chat.send
+    add(msg)
+  })
 
-	return () => console.log('dispose')
-})
+	return () => null
+}).skipRepeats()
+  .skipWhile(msg => msg.length === 0)
+  .map(x => ({
+    author: 'current author',
+    msg: x
+  }))
+  .map(x => JSON.stringify(x))
 
-stream.forEach(x => console.log(x))
+toWebSocket(streamOfMsgToSend, conn)
 
 const halko = 'Oh how we chattin <3'
 

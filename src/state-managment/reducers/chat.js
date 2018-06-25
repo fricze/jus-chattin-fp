@@ -1,14 +1,10 @@
+import { normalizeChatData } from '../../data-processing/chat-messages.js'
+
 const startState = {
   text: '',
+  send: '',
   chatMsgs: []
 }
-
-const normalizeChatData = messages => messages.map(
-  msg => ({
-    ...msg,
-    time: new Date(msg.time * 1000)
-  })
-)
 
 const chat = (state = startState, action) => {
   switch (action.type) {
@@ -17,9 +13,15 @@ const chat = (state = startState, action) => {
       ...state,
       text: action.text
     }
+  case 'SEND_MSG':
+    return {
+      ...state,
+      send: action.text
+    }
   case 'CLEAR_SEND_MSG':
     return {
       ...state,
+      send: '',
       text: ''
     }
   case 'SET_CHAT':
