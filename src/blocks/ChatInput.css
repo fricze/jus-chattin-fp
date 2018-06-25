@@ -1,4 +1,15 @@
 .chat-input {
   padding: 0 16px;
-  width: 400px;
+  width: 600px;
+}
+
+.submit-button {
+  background: #FFF;
+  height: 33px;
+  border: 1px solid #333;
+  margin-left: 16px;
+}
+
+.submit-form {
+  display: flex;
 }

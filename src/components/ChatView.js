@@ -1,9 +1,8 @@
 import React from 'react'
 import { ChatInput } from '../blocks/ChatInput.js'
 import { connect } from 'react-redux'
-import {
-  MessagesView, MessagesViewComponent, ScrollToBottom
-} from './MessagesView.js'
+import { MessagesView } from './MessagesView.js'
+import { ScrollToBottom } from '../blocks/ScrollToBottom.js'
 
 const ChatView = ({ store }) => {
   const setMsg = val => store.dispatch({
@@ -19,7 +18,7 @@ const ChatView = ({ store }) => {
   const value = store.chat.text
   const messages = store.chat.chatMsgs || []
 
-  const messagesView = <ScrollToBottom>
+  const messagesView = <ScrollToBottom className="cipkiiiiii">
     { MessagesView({ messages }) }
   </ScrollToBottom>
 
