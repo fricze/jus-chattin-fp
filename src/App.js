@@ -4,11 +4,10 @@ import { Provider } from 'react-redux'
 import { createEpicMiddleware, combineEpics, selectArray, select } from 'redux-most'
 import { compose } from 'ramda'
 import { map, fromPromise, of, from } from 'most'
-import { periodic, scan, take, runEffects, tap } from '@most/core'
 import { toWebSocket } from './ws.js'
 import rootReducer from './state-managment/reducers/index.js'
-import { conn, stream } from './state-managment/sources/chat.js'
-import { create } from 'most-subject'
+import { conn, socketStream } from './state-managment/sources/chat.js'
+import { create } from '@most/create'
 
 import './layout/reset.css'
 import './layout/fonts.css'
@@ -19,7 +18,7 @@ import ChatConnectionFactory from './connections/ChatConnection.js'
 
 const receiveWsEpic = action$ => action$
   .thru(select('START_APP'))
-  .chain(() => stream)
+  .chain(() => socketStream)
   .map(value => ({
     type: 'SET_CHAT',
     value: JSON.parse(value.data)
@@ -54,6 +53,14 @@ const store = createStore(
   rootReducer,
   applyMiddleware(epicMiddleware)
 )
+
+const stream = create((add, end, error) => {
+  store.subscribe(() => add(store.getState()))
+
+	return () => console.log('dispose')
+})
+
+stream.forEach(x => console.log(x))
 
 const halko = 'Oh how we chattin <3'
 

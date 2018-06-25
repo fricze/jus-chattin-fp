@@ -1,14 +1,22 @@
-const defaultState = { text: '' }
+const startState = {
+  text: '',
+  chatMsgs: []
+}
 
-const chat = (state = defaultState, action) => {
+const normalizeChatData = messages => messages.map(
+  msg => ({
+    ...msg,
+    time: new Date(msg.time * 1000)
+  })
+)
+
+const chat = (state = startState, action) => {
   switch (action.type) {
   case 'SET_MSG':
     return {
       ...state,
       text: action.text
     }
-  case 'SEND_MSG':
-    return state
   case 'CLEAR_SEND_MSG':
     return {
       ...state,
@@ -17,7 +25,7 @@ const chat = (state = defaultState, action) => {
   case 'SET_CHAT':
     return {
       ...state,
-      chatValue: action.value
+      chatMsgs: normalizeChatData(action.value)
     }
   default:
     return state

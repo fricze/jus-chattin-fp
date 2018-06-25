@@ -97,6 +97,12 @@
   dependencies:
     "@most/multicast" "^1.1.4"
 
+"@most/create@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@most/create/-/create-2.0.1.tgz#29156589638fa4ed12620203c7a698d6951a348f"
+  dependencies:
+    "@most/multicast" "^1.2.4"
+
 "@most/disposable@^0.13.1":
   version "0.13.1"
   resolved "https://registry.yarnpkg.com/@most/disposable/-/disposable-0.13.1.tgz#9bfa07ebff9392c72afd0fc647dcd89a42d1d40c"
