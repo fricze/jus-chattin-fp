@@ -1,7 +1,7 @@
 import React from 'react'
 import { ChatInput } from '../blocks/ChatInput.js'
 import { connect } from 'react-redux'
-import { MessagesView } from './MessagesView.js'
+import { MessagesView, MessagesViewComponent } from './MessagesView.js'
 
 const ChatView = ({ store }) => {
   const setMsg = val => store.dispatch({
@@ -17,14 +17,22 @@ const ChatView = ({ store }) => {
   const value = store.chat.text
   const messages = store.chat.chatMsgs || []
 
-  const view = MessagesView({ messages })
+  /* const messagesView = MessagesView({ messages }) */
+
+  const messagesView = <MessagesViewComponent
+                         messages={messages} />
+
+  const chatInputView =
+    <ChatInput value={value}
+               sendMsg={sendMsg}
+               setMsg={setMsg} />
+
 
   return (
     <div>
-      <ChatInput value={value}
-                 sendMsg={sendMsg}
-                 setMsg={setMsg} />
-      { view }
+      { messagesView }
+      <div style={{height: 4 * 8}}></div>
+      { chatInputView }
     </div>
   )
 }

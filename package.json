@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^1.2.3",
     "@most/create": "^2.0.1",
     "most": "^1.7.3",
     "most-w3msg": "^2.0.0",

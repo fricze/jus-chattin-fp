@@ -13,6 +13,8 @@ import './layout/reset.css'
 import './layout/fonts.css'
 import './layout/inputs.css'
 
+import './App.css'
+
 import ChatView from './components/ChatView.js'
 import ChatConnectionFactory from './connections/ChatConnection.js'
 
@@ -39,12 +41,17 @@ const rootEpic = combineEpics([
 
 const epicMiddleware = createEpicMiddleware(rootEpic)
 
-const ChatConnection = ChatConnectionFactory(ChatView)
+const ChatComponent = ChatConnectionFactory(ChatView)
 
 const store = createStore(
   rootReducer,
   applyMiddleware(epicMiddleware)
 )
+
+const prepareMsg = value => ({
+  author: 'current author',
+  msg: value
+})
 
 const streamOfMsgToSend = create((add) => {
   store.subscribe(() => {
@@ -54,11 +61,8 @@ const streamOfMsgToSend = create((add) => {
 
 	return () => null
 }).skipRepeats()
-  .skipWhile(msg => msg.length === 0)
-  .map(x => ({
-    author: 'current author',
-    msg: x
-  }))
+  .filter(msg => msg.length > 0)
+  .map(prepareMsg)
   .map(x => JSON.stringify(x))
 
 toWebSocket(streamOfMsgToSend, conn)
@@ -67,12 +71,12 @@ const halko = 'Oh how we chattin <3'
 
 const App = () => (
   <Provider store={store}>
-    <div>
-      <header>
-        <h1>{ halko }</h1>
+    <div style={{marginLeft: 4 * 8, marginRight: 4 * 8}}>
+      <header style={{marginBottom: 3 * 8}}>
+        <h3>{ halko }</h3>
       </header>
 
-      <ChatConnection />
+      <ChatComponent />
     </div>
   </Provider>
 )

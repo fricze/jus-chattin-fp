@@ -1,11 +1,15 @@
 import React from 'react'
 
-const MsgView = ({ msg, time }) => {
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+
+const MsgView = ({ msg, time, author }) => {
   return (
-    <div key={msg + time.getTime()}>
-      <div>{ time.getDate() }</div>
-      <div>{ msg }</div>
-    </div>
+    <ListItem key={msg + time.getTime()}>
+      <ListItemText primary={author}
+                    secondary={msg} />
+    </ListItem>
   )
 }
 
@@ -13,8 +17,32 @@ export const MessagesView = ({ messages }) => {
   const view = messages.map(MsgView)
 
   return (
-    <div>
+    <List component="nav">
       { view }
-    </div>
+    </List>
   )
+}
+
+const scrollToBottom = ({ current }) => {
+  if (current) {
+    current.scrollTop = current.scrollHeight
+  }
+}
+
+export class MessagesViewComponent extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.containerRef = React.createRef()
+  }
+
+  componentDidUpdate() {
+    scrollToBottom(this.containerRef)
+  }
+
+  render() {
+    return <div ref={this.containerRef} className="chat-messages">
+      <MessagesView {...this.props} />
+    </div>
+  }
 }
