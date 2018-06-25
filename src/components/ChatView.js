@@ -18,14 +18,13 @@ const ChatView = ({ store }) => {
   const value = store.chat.text
   const messages = store.chat.chatMsgs || []
 
-  const messagesView = <ScrollToBottom className="cipkiiiiii">
+  const messagesView = <ScrollToBottom className="halko">
     { MessagesView({ messages }) }
   </ScrollToBottom>
 
-  const chatInputView =
-    <ChatInput value={value}
-               sendMsg={sendMsg}
-               setMsg={setMsg} />
+  const chatInputView = <ChatInput value={value}
+                                   sendMsg={sendMsg}
+                                   setMsg={setMsg} />
 
 
   return (
