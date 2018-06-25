@@ -46,3 +46,22 @@ export class MessagesViewComponent extends React.Component {
     </div>
   }
 }
+
+
+export class ScrollToBottom extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.containerRef = React.createRef()
+  }
+
+  componentDidUpdate() {
+    scrollToBottom(this.containerRef)
+  }
+
+  render() {
+    return <div ref={this.containerRef} className="chat-messages">
+      { this.props.children }
+    </div>
+  }
+}
